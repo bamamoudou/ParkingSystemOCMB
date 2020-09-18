@@ -31,13 +31,15 @@ public class TicketDAO {
             ps.setDouble(3, ticket.getPrice());
             ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
             ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())) );
+            ps.setBoolean(6, ticket.isIsAvailableDiscount());
             return ps.execute();
         }catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return false;
+            
         }
+        return false;
     }
 
     public Ticket getTicket(String vehicleRegNumber) {
@@ -58,6 +60,7 @@ public class TicketDAO {
                 ticket.setPrice(rs.getDouble(3));
                 ticket.setInTime(rs.getTimestamp(4));
                 ticket.setOutTime(rs.getTimestamp(5));
+                ticket.setIsAvailableDiscount(rs.getBoolean(6));
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -65,8 +68,8 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return ticket;
         }
+        return ticket;
     }
 
     public boolean updateTicket(Ticket ticket) {
@@ -86,4 +89,29 @@ public class TicketDAO {
         }
         return false;
     }
+    
+    public boolean isReccurentUser(String vehicleRegNumber) {
+     	Connection con = null;
+         PreparedStatement ps = null;
+         ResultSet rs = null;
+     	 try {
+     		 con = dataBaseConfig.getConnection();
+              ps = con.prepareStatement(DBConstants.RECURRENT_USER);
+              ps.setString(1, vehicleRegNumber);
+              rs = ps.executeQuery();
+              
+              if (rs.next()) {
+                  return rs.getBoolean(1);
+              }
+          }catch (Exception ex){
+              logger.error("Error identification User",ex);
+          }finally {
+         	 dataBaseConfig.closeResultSet(rs);
+         	 dataBaseConfig.closePreparedStatement(ps);
+              dataBaseConfig.closeConnection(con);
+              
+              
+          }
+     	  return false;		
+     }
 }

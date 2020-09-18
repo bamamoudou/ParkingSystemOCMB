@@ -160,5 +160,43 @@ public class FareCalculatorServiceTest {
        assertThat(ticket.getPrice()).isEqualTo(0.5 * Fare.FIRST_THIRTY_MINUTE_FREE);
    	 
     }
+    
+    @Test
+    public void calculateFareWithDiscountCinqPerCentReccurentCar() {
+   	 long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+
+   	 Calendar inTime = Calendar.getInstance();
+   	 long t= inTime.getTimeInMillis();
+   	 Date outTime=new Date(t + (60 * ONE_MINUTE_IN_MILLIS));
+       ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+       
+       ticket.setInTime(inTime.getTime());
+       ticket.setOutTime(outTime);
+       ticket.setParkingSpot(parkingSpot);
+       ticket.setIsAvailableDiscount(true);
+       fareCalculatorService.calculateFare(ticket);
+   	 Double discount = (Fare.CAR_RATE_PER_HOUR * 5)/100;
+   	 assertThat(ticket.getPrice()).isEqualTo(Fare.CAR_RATE_PER_HOUR - discount);
+    }
+    @Test
+    public void calculateFareWithDiscountCinqPerCentReccurentBike() {
+   	 long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+
+   	 Calendar inTime = Calendar.getInstance();
+   	 
+   	 long t= inTime.getTimeInMillis();
+   	 Date outTime=new Date(t + (60 * ONE_MINUTE_IN_MILLIS));
+       ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
+       
+       ticket.setInTime(inTime.getTime());
+       ticket.setOutTime(outTime);
+       ticket.setParkingSpot(parkingSpot);
+       ticket.setIsAvailableDiscount(true);
+       fareCalculatorService.calculateFare(ticket);
+   	 Double discount = (Fare.BIKE_RATE_PER_HOUR * 5)/100;
+   	 assertThat(ticket.getPrice()).isEqualTo(Fare.BIKE_RATE_PER_HOUR - discount);
+    }
+
+
 
 }

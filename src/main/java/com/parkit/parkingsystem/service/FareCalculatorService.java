@@ -24,12 +24,15 @@ public class FareCalculatorService {
 			case CAR: {
 
 				ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+				calculFareWithDiscount(ticket.getPrice(), ticket);
+				
 				break;
 			}
 
 			case BIKE: {
 
 				ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+				calculFareWithDiscount(ticket.getPrice(), ticket);
 
 				break;
 			}
@@ -38,5 +41,14 @@ public class FareCalculatorService {
 			}
 		}
 
+	}
+
+	public void calculFareWithDiscount(Double price, Ticket ticket) {
+
+		if (ticket.isIsAvailableDiscount()) {
+			double discount = (price * 5) / 100;
+			price = price - discount;
+		}
+		ticket.setPrice(price);
 	}
 }
