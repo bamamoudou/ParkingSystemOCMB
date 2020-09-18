@@ -9,8 +9,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class FareCalculatorServiceTest {
@@ -122,6 +124,41 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
+    }
+    
+    @Test
+    public void calculateFareCarWithLessThirtyMinuteParkingTime(){
+   	 long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+
+   	 Calendar inTime = Calendar.getInstance();
+   	 long t= inTime.getTimeInMillis();
+   	 Date outTime=new Date(t + (30 * ONE_MINUTE_IN_MILLIS));
+       ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+       
+       ticket.setInTime(inTime.getTime());
+       ticket.setOutTime(outTime);
+       ticket.setParkingSpot(parkingSpot);
+       fareCalculatorService.calculateFare(ticket);
+       // assertEquals( (0.5 * Fare.FREE_FARE) , ticket.getPrice() );
+       assertThat(ticket.getPrice()).isEqualTo(0.5 * Fare.FIRST_THIRTY_MINUTE_FREE);
+   	 
+   	 
+    }
+    @Test
+    public  void calculateFareBikeWithLessThirtyMinuteParkingTime(){
+   	 long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+   	 Calendar inTime = Calendar.getInstance();
+   	 long t= inTime.getTimeInMillis();
+   	 Date outTime=new Date(t + (30 * ONE_MINUTE_IN_MILLIS));
+   	 ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+   	 
+   	 ticket.setInTime(inTime.getTime());
+       ticket.setOutTime(outTime);
+       ticket.setParkingSpot(parkingSpot);
+       fareCalculatorService.calculateFare(ticket);
+       
+       assertThat(ticket.getPrice()).isEqualTo(0.5 * Fare.FIRST_THIRTY_MINUTE_FREE);
+   	 
     }
 
 }
