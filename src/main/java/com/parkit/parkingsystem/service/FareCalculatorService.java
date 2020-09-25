@@ -1,9 +1,14 @@
 package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
+import com.parkit.parkingsystem.dao.ParkingSpotDAO;
+import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
+
+	private ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
+	private TicketDAO ticketDAO = new TicketDAO();
 
 	public void calculateFare(Ticket ticket) {
 		if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
@@ -23,7 +28,6 @@ public class FareCalculatorService {
 			case CAR: {
 
 				ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-				calculFareWithDiscount(ticket.getPrice(), ticket);
 
 				break;
 			}
@@ -31,7 +35,6 @@ public class FareCalculatorService {
 			case BIKE: {
 
 				ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-				calculFareWithDiscount(ticket.getPrice(), ticket);
 
 				break;
 			}
@@ -42,12 +45,19 @@ public class FareCalculatorService {
 
 	}
 
-	public void calculFareWithDiscount(Double price, Ticket ticket) {
+	public boolean recurringClient(Ticket ticket) {
+		Boolean existingClient = parkingSpotDAO.checkClientExist(ticket);
+		return existingClient;
+	}
 
-		if (ticket.isIsAvailableDiscount()) {
-			double discount = (price * 5) / 100;
-			price = price - discount;
-		}
-		ticket.setPrice(price);
+	public double userDiscount(Ticket ticket) {
+
+		if (!recurringClient(ticket)) {
+			parkingSpotDAO.checkClientExist(ticket);
+			return ticket.getPrice();
+		} else
+
+			return (ticket.getPrice() - 0.05 * ticket.getPrice());
+
 	}
 }
