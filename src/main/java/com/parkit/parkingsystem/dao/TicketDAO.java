@@ -31,12 +31,14 @@ public class TicketDAO {
             ps.setDouble(3, ticket.getPrice());
             ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
             ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())) );
+            //ps.setBoolean(6, ticket.isIsAvailableDiscount());
             return ps.execute();
         }catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
             return false;
+            
         }
     }
 
@@ -58,6 +60,7 @@ public class TicketDAO {
                 ticket.setPrice(rs.getDouble(3));
                 ticket.setInTime(rs.getTimestamp(4));
                 ticket.setOutTime(rs.getTimestamp(5));
+               // ticket.setIsAvailableDiscount(rs.getBoolean(6));
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -86,4 +89,7 @@ public class TicketDAO {
         }
         return false;
     }
+    
+    
+   
 }
