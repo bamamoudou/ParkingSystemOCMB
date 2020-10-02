@@ -177,55 +177,33 @@ public class FareCalculatorServiceTest {
 		assertThat(ticket.getPrice()).isEqualTo(0.5 * Fare.FIRST_THIRTY_MINUTE_FREE);
 
 	}
-/**
+
 	@Test
-	public void calculateFareWithDiscountCinqPerCentReccurentCar() {
-		long ONE_MINUTE_IN_MILLIS = 60000;// millisecs
-
-		Calendar inTime = Calendar.getInstance();
-		long t = inTime.getTimeInMillis();
-		Date outTime = new Date(t + (60 * ONE_MINUTE_IN_MILLIS));
+	public void discountCarUser() {
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-
-		ticket.setInTime(inTime.getTime());
-		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
-		ticket.setIsAvailableDiscount(true);
-		fareCalculatorService.calculateFare(ticket);
+		// ticket.setId(1);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setPrice(Fare.CAR_RATE_PER_HOUR);
 		Double discount = (Fare.CAR_RATE_PER_HOUR * 5) / 100;
-		assertThat(ticket.getPrice()).isEqualTo(Fare.CAR_RATE_PER_HOUR - discount);
+		when(parkingSpotDAO.checkClientExist(any(Ticket.class))).thenReturn(true);
+		double fare = fareCalculatorService.userDiscount(ticket);
+		assertEquals(Fare.CAR_RATE_PER_HOUR - discount, fare);
+
 	}
-	*/
 
-/**	@Test
-	public void calculateFareWithDiscountCinqPerCentReccurentBike() {
-		long ONE_MINUTE_IN_MILLIS = 60000;// millisecs
-
-		Calendar inTime = Calendar.getInstance();
-
-		long t = inTime.getTimeInMillis();
-		Date outTime = new Date(t + (60 * ONE_MINUTE_IN_MILLIS));
+	@Test
+	public void discountBikeUser() {
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
-
-		ticket.setInTime(inTime.getTime());
-		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
-		ticket.setIsAvailableDiscount(true);
-		fareCalculatorService.calculateFare(ticket);
+		// ticket.setId(1);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setPrice(Fare.BIKE_RATE_PER_HOUR);
 		Double discount = (Fare.BIKE_RATE_PER_HOUR * 5) / 100;
-		assertThat(ticket.getPrice()).isEqualTo(Fare.BIKE_RATE_PER_HOUR - discount);
-	}
-	*/
-	
-	  @Test
-		public void discountCarUser() {
-	    	 ticket.setId(1);
-	    	 ticket.setVehicleRegNumber("ABCDEF");
-	    	 ticket.setPrice(45.0);
-	    	 when(parkingSpotDAO.checkClientExist(any(Ticket.class))).thenReturn(true);
-	 		double fare = fareCalculatorService.userDiscount(ticket);
-			assertEquals(42.75, fare);   
+		when(parkingSpotDAO.checkClientExist(any(Ticket.class))).thenReturn(true);
+		double fare = fareCalculatorService.userDiscount(ticket);
+		assertEquals(Fare.BIKE_RATE_PER_HOUR - discount, fare);
 
-		}
+	}
 
 }
