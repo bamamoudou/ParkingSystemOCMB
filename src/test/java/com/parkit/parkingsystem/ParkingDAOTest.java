@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,6 +10,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +62,14 @@ public class ParkingDAOTest {
     	
 		
     }
+    @Test
+	   public void testUpdateParking() throws SQLException {
+		  	
+		  	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);  			  	
+	        boolean isTrue = parkingSpotDAO.updateParking(parkingSpot);
+	        assertEquals(isTrue, Boolean.TRUE);
+	        
+	    }
 
 
     
