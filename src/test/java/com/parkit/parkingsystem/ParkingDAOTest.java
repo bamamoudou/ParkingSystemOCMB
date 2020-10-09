@@ -70,6 +70,10 @@ public class ParkingDAOTest {
 	        assertEquals(isTrue, Boolean.TRUE);
 	        
 	    }
+    @Test
+    public void testCheckClientExist() throws Exception{
+   
+    }
 
 
     
