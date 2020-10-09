@@ -19,7 +19,7 @@ import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 
-public class TicketDaoTest {
+public class TicketDAOTest {
 	private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
 	private static TicketDAO ticketDAO;
 	
