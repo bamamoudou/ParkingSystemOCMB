@@ -10,6 +10,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -72,8 +73,14 @@ public class ParkingDAOTest {
 	    }
     @Test
     public void testCheckClientExist() throws Exception{
+   	 Ticket ticket = new Ticket();
+   	 ticket.setVehicleRegNumber("ABCDEF");
+   	 boolean isTrue = parkingSpotDAO.checkClientExist(ticket);
+   	 assertFalse(isTrue);
+   	 //assertEquals(isTrue, Boolean.FALSE);
    
     }
+ 
 
 
     

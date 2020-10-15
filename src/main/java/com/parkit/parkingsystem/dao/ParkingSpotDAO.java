@@ -73,8 +73,8 @@ public class ParkingSpotDAO {
             logger.error("Error updating registration",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return false;
 	}
 
 }
