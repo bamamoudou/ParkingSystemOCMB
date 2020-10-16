@@ -74,9 +74,11 @@ public class ParkingDAOTest {
     @Test
     public void testCheckClientExist() throws Exception{
    	 Ticket ticket = new Ticket();
+   	 ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
    	 ticket.setVehicleRegNumber("ABCDEF");
+   	 ticket.setParkingSpot(parkingSpot);
    	 boolean isTrue = parkingSpotDAO.checkClientExist(ticket);
-   	 assertFalse(isTrue);
+   	 assertTrue(isTrue);
    	 //assertEquals(isTrue, Boolean.FALSE);
    
     }

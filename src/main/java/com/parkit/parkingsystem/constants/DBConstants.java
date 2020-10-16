@@ -12,6 +12,6 @@ public class DBConstants {
 	public static final String RECURRENT_USER = "select exists (select * from ticket t where t.VEHICLE_REG_NUMBER = ?)";
 	public static final String UPDATE_TICKET_FOR_INTEGRATION_TEST = "update ticket set IN_TIME=? where ID=?";
 
-	public static final String GET_REGISTRATION_EXIST = "select id from client_registration where VEHICLE_REG_NUMBER= ?";
+	public static final String GET_REGISTRATION_EXIST = "select id from ticket where VEHICLE_REG_NUMBER= ?";
 	public static final String REGISTER_NEW_USER = "insert into client_registration (VEHICLE_REG_NUMBER) values (?)";
 }

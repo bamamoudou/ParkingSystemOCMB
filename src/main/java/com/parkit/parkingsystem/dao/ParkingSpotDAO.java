@@ -66,8 +66,8 @@ public class ParkingSpotDAO {
             PreparedStatement ps = con.prepareStatement(DBConstants.GET_REGISTRATION_EXIST); 
             //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER
             //ps.setInt(1,ticket.getId());
-            ps.setInt(1,ticket.getParkingSpot().getId());
-            ps.setString(2, ticket.getVehicleRegNumber());
+            //ps.setInt(1,ticket.getParkingSpot().getId());
+            ps.setString(1, ticket.getVehicleRegNumber());
             return ps.execute();
         }catch (Exception ex){
             logger.error("Error updating registration",ex);
