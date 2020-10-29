@@ -72,9 +72,9 @@ public class ParkingService {
 			if (parkingNumber > 0) {
 				parkingSpot = new ParkingSpot(parkingNumber, parkingType, true);
 		}
-	//		else if (parkingNumber == 0) {
-//				System.out.println("No parking spot available");
-//			}
+			else if (parkingNumber == 0) {
+				System.out.println("No parking spot available");
+			}
 			else {
 				throw new Exception("Error fetching parking number from DB. Parking slots might be full");
 				// System.out.println("No place available");
