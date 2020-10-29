@@ -51,11 +51,16 @@ public class ParkingSpotDAO {
             int updateRowCount = ps.executeUpdate();
             dataBaseConfig.closePreparedStatement(ps);
             return (updateRowCount == 1);
-        }catch (Exception ex){
+        } catch (RuntimeException e) {
+			 throw e;
+		} catch (Exception ex){
             logger.error("Error updating parking info",ex);
             return false;
         }finally {
-            dataBaseConfig.closeConnection(con);
+      	  if (con != null) {
+				
+      		  dataBaseConfig.closeConnection(con);
+			}
         }
     }
     //check for recurring client
