@@ -2,13 +2,11 @@ package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
-import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 
 	private ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
-	//private TicketDAO ticketDAO = new TicketDAO();
 
 	public void calculateFare(Ticket ticket) {
 		if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
@@ -41,6 +39,7 @@ public class FareCalculatorService {
 			default:
 				throw new IllegalArgumentException("Unkown Parking Type");
 			}
+			userDiscount(ticket);
 		}
 
 	}
@@ -58,7 +57,6 @@ public class FareCalculatorService {
 		} else
 
 			return (ticket.getPrice() - 5 * ticket.getPrice() / 100);
-		
 
 	}
 }

@@ -1,17 +1,16 @@
 package com.parkit.parkingsystem.service;
 
-import com.parkit.parkingsystem.constants.DBConstants;
+import java.util.Date;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.util.InputReaderUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.sql.PreparedStatement;
-import java.util.Date;
 
 public class ParkingService {
 
@@ -39,8 +38,6 @@ public class ParkingService {
 
 				Date inTime = new Date();
 				Ticket ticket = new Ticket();
-				// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-				// ticket.setId(ticketID);
 				ticket.setParkingSpot(parkingSpot);
 				ticket.setVehicleRegNumber(vehicleRegNumber);
 				ticket.setPrice(0);
@@ -66,18 +63,14 @@ public class ParkingService {
 		ParkingSpot parkingSpot = null;
 		try {
 			ParkingType parkingType = getVehichleType();
-			// PreparedStatement ps =
-			// con.prepareStatement(DBConstants.GET_NEXT_PARKING_SPOT);
 			parkingNumber = parkingSpotDAO.getNextAvailableSlot(parkingType);
 			if (parkingNumber > 0) {
 				parkingSpot = new ParkingSpot(parkingNumber, parkingType, true);
-		}
-			else if (parkingNumber == 0) {
+			} else if (parkingNumber == 0) {
 				System.out.println("No parking spot available");
-			}
-			else {
+			} else {
 				throw new Exception("Error fetching parking number from DB. Parking slots might be full");
-				// System.out.println("No place available");
+
 			}
 		} catch (IllegalArgumentException ie) {
 			logger.error("Error parsing user input for type of vehicle", ie);
